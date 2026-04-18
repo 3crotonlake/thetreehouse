@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Treehouse — A Creative Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bark: #3d2b1f;
+      --bark-light: #6b4a36;
+      --moss: #5c7a4e;
+      --moss-light: #7ea86d;
+      --lichen: #b5c9a1;
+      --sky: #d4e8f0;
+      --cream: #f7f3ec;
+      --parchment: #ede6d6;
+      --amber: #c8873c;
+      --amber-light: #e8a85a;
+      --gold: #d4a85a;
+      --rust: #a84832;
+      --text: #2a1f15;
+      --text-mid: #5a4535;
+      --text-soft: #8a7060;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 110%, rgba(92,122,78,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 90% -10%, rgba(200,135,60,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 70% at 50% 0%, rgba(61,43,31,0.06) 0%, transparent 70%),
+        var(--cream);
+    }
+
+    /* Tree illustration — SVG background */
+    .hero-tree {
+      position: absolute;
+      bottom: -20px;
+      right: -60px;
+      width: 520px;
+      opacity: 0.13;
+      pointer-events: none;
+      animation: sway 8s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+    @keyframes sway {
+      0%,100% { transform: rotate(0deg); }
+      50% { transform: rotate(0.8deg); }
+    }
+
+    .hero-leaves {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .leaf {
+      position: absolute;
+      width: 12px; height: 18px;
+      background: var(--moss);
+      border-radius: 50% 0 50% 0;
+      opacity: 0;
+      animation: fall linear infinite;
+    }
+    .leaf:nth-child(1)  { left: 10%;  animation-duration: 14s; animation-delay: 0s;    width:8px;  height:12px; opacity:.07; }
+    .leaf:nth-child(2)  { left: 25%;  animation-duration: 18s; animation-delay: 3s;    width:14px; height:20px; opacity:.05; background:var(--amber); }
+    .leaf:nth-child(3)  { left: 55%;  animation-duration: 12s; animation-delay: 6s;    width:10px; height:14px; opacity:.06; }
+    .leaf:nth-child(4)  { left: 70%;  animation-duration: 20s; animation-delay: 1s;    width:16px; height:22px; opacity:.04; background:var(--gold); }
+    .leaf:nth-child(5)  { left: 85%;  animation-duration: 16s; animation-delay: 8s;    width:8px;  height:12px; opacity:.07; }
+    .leaf:nth-child(6)  { left: 40%;  animation-duration: 22s; animation-delay: 4s;    width:12px; height:16px; opacity:.05; background:var(--rust); }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg);   opacity: 0; }
+      10%  { opacity: .08; }
+      90%  { opacity: .05; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      position: relative;
+      z-index: 10;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--bark);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo .acorn { font-size: 1.1rem; }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--bark); }
+    .nav-join {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--cream);
+      background: var(--bark);
+      padding: 10px 22px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-join:hover { background: var(--bark-light); transform: translateY(-1px); }
+
+    /* ── HERO CONTENT ── */
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 48px 0 80px;
+      position: relative;
+      z-index: 10;
+    }
+    .hero-tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .hero-tag::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--moss);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      color: var(--bark);
+      max-width: 700px;
+      margin-bottom: 28px;
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--moss);
+    }
+    .hero-desc {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--text-mid);
+      max-width: 500px;
+      margin-bottom: 44px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .btn-primary {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--cream);
+      background: var(--bark);
+      padding: 16px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: all 0.25s;
+      box-shadow: 0 4px 20px rgba(61,43,31,0.2);
+    }
+    .btn-primary:hover {
+      background: var(--bark-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(61,43,31,0.25);
+    }
+    .btn-secondary {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--text-mid);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+    .btn-secondary:hover { color: var(--bark); }
+    .btn-secondary .arrow { transition: transform 0.2s; }
+    .btn-secondary:hover .arrow { transform: translateX(4px); }
+
+    /* ── HERO STATS ── */
+    .hero-stats {
+      padding: 32px 80px;
+      display: flex;
+      gap: 48px;
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(61,43,31,0.08);
+    }
+    .stat {
+      display: flex;
+      flex-direction: column;
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--bark);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── SECTION WRAPPER ── */
+    section {
+      padding: 100px 80px;
+    }
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--moss);
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--bark);
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    .section-body {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 560px;
+    }
+
+    /* ── MEMBERS SECTION ── */
+    .members-section {
+      background: var(--parchment);
+      position: relative;
+      overflow: hidden;
+    }
+    .members-section::before {
+      content: '';
+      position: absolute;
+      top: -100px; left: -100px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(92,122,78,0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .members-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+    }
+    .members-header .view-all {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--bark-light);
+      text-decoration: none;
+      border-bottom: 1px solid var(--bark-light);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .members-header .view-all:hover { color: var(--bark); }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .member-card {
+      background: var(--cream);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(61,43,31,0.06);
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .member-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(61,43,31,0.12);
+    }
+    .member-card-art {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      display: block;
+      background: var(--lichen);
+    }
+    .member-card-art.placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+    .member-card-info {
+      padding: 20px 24px 24px;
+    }
+    .member-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--bark);
+      margin-bottom: 4px;
+    }
+    .member-card-medium {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      letter-spacing: 0.04em;
+    }
+    .member-card-preview {
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      line-height: 1.6;
+      margin-top: 10px;
+    }
+
+    /* ── ABOUT SECTION ── */
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-visual {
+      position: relative;
+      height: 480px;
+    }
+    .about-card {
+      position: absolute;
+      background: var(--parchment);
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 32px rgba(61,43,31,0.1);
+    }
+    .about-card-1 {
+      top: 0; left: 0;
+      width: 280px; height: 200px;
+      background: var(--bark);
+      color: var(--cream);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .about-card-1 .big-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 4rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--amber-light);
+    }
+    .about-card-1 .label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: rgba(247,243,236,0.6);
+      margin-top: 6px;
+    }
+    .about-card-2 {
+      top: 40px; left: 220px;
+      width: 240px;
+      background: var(--moss);
+    }
+    .about-card-2 .quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--cream);
+      line-height: 1.6;
+    }
+    .about-card-3 {
+      bottom: 20px; left: 60px;
+      width: 360px;
+    }
+    .about-card-3 .features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .about-card-3 .features li {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .about-card-3 .features li::before {
+      content: '✦';
+      color: var(--amber);
+      font-size: 0.7rem;
+    }
+
+    /* ── JOIN SECTION ── */
+    .join-section {
+      background: var(--bark);
+      color: var(--cream);
+      text-align: center;
+      padding: 100px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .join-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 0%, rgba(200,135,60,0.15), transparent 60%);
+    }
+    .join-section .section-label { color: var(--amber-light); justify-content: center; }
+    .join-section .section-label::before { background: var(--amber-light); }
+    .join-section .section-title { color: var(--cream); margin: 0 auto 20px; max-width: 560px; }
+    .join-section .section-body { color: rgba(247,243,236,0.65); margin: 0 auto 48px; text-align: center; }
+    .join-input-row {
+      display: flex;
+      gap: 12px;
+      max-width: 460px;
+      margin: 0 auto;
+      justify-content: center;
+    }
+    .join-input {
+      flex: 1;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      padding: 14px 20px;
+      border-radius: 100px;
+      border: 1px solid rgba(247,243,236,0.2);
+      background: rgba(247,243,236,0.08);
+      color: var(--cream);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .join-input::placeholder { color: rgba(247,243,236,0.35); }
+    .join-input:focus { border-color: rgba(247,243,236,0.5); }
+    .join-btn {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--bark);
+      background: var(--amber-light);
+      padding: 14px 28px;
+      border-radius: 100px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .join-btn:hover {
+      background: var(--gold);
+      transform: translateY(-1px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--parchment);
+      padding: 48px 80px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(61,43,31,0.08);
+    }
+    footer .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--bark);
+      font-weight: 700;
+    }
+    footer .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+    }
+    footer .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+    footer .footer-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      text-decoration: none;
+    }
+    footer .footer-links a:hover { color: var(--bark); }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <section class="hero">
+    <!-- Falling leaves -->
+    <div class="hero-leaves">
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+      <div class="leaf"></div>
+    </div>
+
+    <!-- Tree SVG -->
+    <svg class="hero-tree" viewBox="0 0 300 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Trunk -->
+      <path d="M140 500 Q135 400 130 350 Q128 300 132 260 Q136 220 140 180" fill="none" stroke="#3d2b1f" stroke-width="18" stroke-linecap="round"/>
+      <!-- Main branches -->
+      <path d="M138 300 Q100 270 60 220 Q40 190 30 150" fill="none" stroke="#3d2b1f" stroke-width="10" stroke-linecap="round"/>
+      <path d="M135 260 Q160 240 190 200 Q210 170 220 130" fill="none" stroke="#3d2b1f" stroke-width="10" stroke-linecap="round"/>
+      <path d="M136 340 Q110 320 90 300 Q70 280 50 270" fill="none" stroke="#3d2b1f" stroke-width="8" stroke-linecap="round"/>
+      <!-- Sub branches -->
+      <path d="M75 200 Q55 175 40 140" fill="none" stroke="#3d2b1f" stroke-width="6" stroke-linecap="round"/>
+      <path d="M70 210 Q85 185 95 160" fill="none" stroke="#3d2b1f" stroke-width="5" stroke-linecap="round"/>
+      <path d="M195 175 Q210 150 200 120" fill="none" stroke="#3d2b1f" stroke-width="6" stroke-linecap="round"/>
+      <path d="M200 180 Q220 160 240 150" fill="none" stroke="#3d2b1f" stroke-width="5" stroke-linecap="round"/>
+      <!-- Foliage blobs -->
+      <ellipse cx="50" cy="120" rx="55" ry="45" fill="#5c7a4e" opacity="0.9"/>
+      <ellipse cx="30" cy="100" rx="40" ry="35" fill="#7ea86d" opacity="0.7"/>
+      <ellipse cx="80" cy="95" rx="45" ry="40" fill="#5c7a4e" opacity="0.8"/>
+      <ellipse cx="215" cy="110" rx="55" ry="45" fill="#5c7a4e" opacity="0.9"/>
+      <ellipse cx="240" cy="90" rx="38" ry="32" fill="#7ea86d" opacity="0.7"/>
+      <ellipse cx="185" cy="88" rx="42" ry="38" fill="#5c7a4e" opacity="0.8"/>
+      <ellipse cx="135" cy="50" rx="60" ry="50" fill="#5c7a4e" opacity="0.85"/>
+      <ellipse cx="110" cy="40" rx="45" ry="38" fill="#7ea86d" opacity="0.7"/>
+      <ellipse cx="165" cy="35" rx="48" ry="40" fill="#5c7a4e" opacity="0.75"/>
+    </svg>
+
+    <!-- Nav -->
+    <nav>
+      <a href="/" class="nav-logo"><span class="acorn">🌿</span> The Treehouse</a>
+      <ul class="nav-links">
+        <li><a href="#members">Members</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#join">Join</a></li>
+      </ul>
+      <a href="#join" class="nav-join">Request an invite →</a>
+    </nav>
+
+    <!-- Hero copy -->
+    <div class="hero-content">
+      <p class="hero-tag">A creative community</p>
+      <h1>A place to<br>make things,<br><em>together.</em></h1>
+      <p class="hero-desc">The Treehouse is a cozy corner of the internet for artists, illustrators, and makers. Your own page. Your own work. A warm community that shows up.</p>
+      <div class="hero-actions">
+        <a href="#join" class="btn-primary">Climb up &nbsp;🌿</a>
+        <a href="#members" class="btn-secondary">Meet the members <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="hero-stats">
+      <div class="stat">
+        <span class="stat-num">47</span>
+        <span class="stat-label">Members</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">312</span>
+        <span class="stat-label">Works shared</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">Invite</span>
+        <span class="stat-label">Only (for now)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section class="members-section" id="members">
+    <div class="members-header fade-in">
+      <div>
+        <p class="section-label">The community</p>
+        <h2 class="section-title">Meet some<br>of our members</h2>
+      </div>
+      <a href="members/" class="view-all">View all members →</a>
+    </div>
+    <div class="members-grid">
+      <a href="members/maya/" class="member-card fade-in fade-in-delay-1">
+        <div class="member-card-art placeholder" style="background: linear-gradient(135deg, #b5c9a1, #7ea86d);">🎨</div>
+        <div class="member-card-info">
+          <div class="member-card-name">Maya Chen</div>
+          <div class="member-card-medium">Watercolor &amp; Ink</div>
+          <div class="member-card-preview">Painting the spaces between memory and place.</div>
+        </div>
+      </a>
+      <a href="members/theo/" class="member-card fade-in fade-in-delay-2">
+        <div class="member-card-art placeholder" style="background: linear-gradient(135deg, #c8873c, #d4a85a);">🖼️</div>
+        <div class="member-card-info">
+          <div class="member-card-name">Theo Adeyemi</div>
+          <div class="member-card-medium">Oil &amp; Mixed Media</div>
+          <div class="member-card-preview">Portraits of people and places that no longer exist.</div>
+        </div>
+      </a>
+      <a href="members/rosa/" class="member-card fade-in fade-in-delay-3">
+        <div class="member-card-art placeholder" style="background: linear-gradient(135deg, #d4e8f0, #b5c9a1);">✏️</div>
+        <div class="member-card-info">
+          <div class="member-card-name">Rosa Lindqvist</div>
+          <div class="member-card-medium">Illustration &amp; Printmaking</div>
+          <div class="member-card-preview">Everything quietly strange about ordinary life.</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-section">
+      <div class="about-visual fade-in">
+        <div class="about-card about-card-1">
+          <span class="big-num">∞</span>
+          <span class="label">Works you can share</span>
+        </div>
+        <div class="about-card about-card-2">
+          <p class="quote">"The internet needs more cozy corners."</p>
+        </div>
+        <div class="about-card about-card-3">
+          <ul class="features">
+            <li>Your own page at thetreehouse.com/members/you</li>
+            <li>Upload and display artwork your way</li>
+            <li>A real community, not an algorithm</li>
+            <li>Simple, beautiful, distraction-free</li>
+            <li>Open to all — invite a friend</li>
+          </ul>
+        </div>
+      </div>
+      <div class="fade-in fade-in-delay-1">
+        <p class="section-label">About this place</p>
+        <h2 class="section-title">Not a platform.<br>A place.</h2>
+        <p class="section-body">We built The Treehouse because we wanted somewhere artists could just… exist online. No engagement metrics. No algorithm. No "content strategy." Just your work, on your page, seen by people who genuinely care.</p>
+        <p class="section-body" style="margin-top: 20px;">Think of it as a neighborhood gallery where the walls belong to you.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOIN -->
+  <section class="join-section" id="join">
+    <p class="section-label">Come on up</p>
+    <h2 class="section-title">Ready to join<br>the treehouse?</h2>
+    <p class="section-body">Leave your email and we'll send you an invite. Or ask a current member to let you in — that works too.</p>
+    <div class="join-input-row">
+      <input type="email" class="join-input" placeholder="your@email.com">
+      <button class="join-btn">Request invite</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">🌿 The Treehouse</div>
+    <p class="footer-copy">A creative community. Made with care.</p>
+    <ul class="footer-links">
+      <li><a href="#">About</a></li>
+      <li><a href="#">Members</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </footer>
+
+  <script>
+    // Scroll fade-in
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.classList.add('visible');
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
