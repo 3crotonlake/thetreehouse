@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maya Chen — The Treehouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bark: #3d2b1f;
+      --bark-light: #6b4a36;
+      --moss: #5c7a4e;
+      --moss-light: #7ea86d;
+      --lichen: #b5c9a1;
+      --cream: #f7f3ec;
+      --parchment: #ede6d6;
+      --amber: #c8873c;
+      --amber-light: #e8a85a;
+      --gold: #d4a85a;
+      --text: #2a1f15;
+      --text-mid: #5a4535;
+      --text-soft: #8a7060;
+      --member-accent: #5c7a4e;
+    }
+
+    body {
+      background-color: var(--cream);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      border-bottom: 1px solid rgba(61,43,31,0.08);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--bark);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--bark); }
+
+    /* ── PROFILE HEADER ── */
+    .profile-hero {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 0;
+      min-height: 420px;
+    }
+    .profile-sidebar {
+      background: var(--member-accent);
+      padding: 60px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+    }
+    .profile-sidebar::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.07);
+    }
+    .profile-sidebar::after {
+      content: '';
+      position: absolute;
+      bottom: 40px; right: -40px;
+      width: 180px; height: 180px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.04);
+    }
+    .member-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(247,243,236,0.6);
+      margin-bottom: 20px;
+    }
+    .member-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .member-medium {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(247,243,236,0.65);
+      letter-spacing: 0.04em;
+      margin-bottom: 28px;
+    }
+    .member-location {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(247,243,236,0.5);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .profile-intro {
+      padding: 60px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--parchment);
+    }
+    .intro-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--bark);
+      line-height: 1.5;
+      margin-bottom: 28px;
+      position: relative;
+      padding-left: 24px;
+    }
+    .intro-quote::before {
+      content: '"';
+      position: absolute;
+      left: 0; top: -8px;
+      font-size: 4rem;
+      color: var(--lichen);
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+    .intro-bio {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+      max-width: 520px;
+    }
+    .profile-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+    .tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--moss);
+      background: rgba(92,122,78,0.1);
+      border: 1px solid rgba(92,122,78,0.2);
+      padding: 6px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section {
+      padding: 80px 80px;
+    }
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .gallery-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--bark);
+    }
+    .gallery-count {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto;
+      gap: 16px;
+    }
+
+    /* Masonry-ish featured layout */
+    .art-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      cursor: pointer;
+      background: var(--parchment);
+    }
+    .art-item:hover .art-overlay { opacity: 1; }
+    .art-item:nth-child(1) { grid-column: span 7; grid-row: span 2; }
+    .art-item:nth-child(2) { grid-column: span 5; grid-row: span 1; }
+    .art-item:nth-child(3) { grid-column: span 5; grid-row: span 1; }
+    .art-item:nth-child(4) { grid-column: span 4; grid-row: span 1; }
+    .art-item:nth-child(5) { grid-column: span 4; grid-row: span 1; }
+    .art-item:nth-child(6) { grid-column: span 4; grid-row: span 1; }
+
+    .art-placeholder {
+      width: 100%;
+      padding-top: 75%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .art-item:nth-child(1) .art-placeholder { padding-top: 70%; }
+    .art-item:nth-child(2) .art-placeholder { padding-top: 65%; }
+    .art-item:nth-child(3) .art-placeholder { padding-top: 65%; }
+
+    .art-emoji {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+    }
+    .art-item:nth-child(1) .art-emoji { font-size: 5rem; }
+
+    /* Color palette per piece */
+    .art-item:nth-child(1) { background: linear-gradient(145deg, #c9d9b5, #9ab885); }
+    .art-item:nth-child(2) { background: linear-gradient(135deg, #d4e8f0, #a8c8d8); }
+    .art-item:nth-child(3) { background: linear-gradient(135deg, #e8d5b5, #d4b890); }
+    .art-item:nth-child(4) { background: linear-gradient(135deg, #c9d9b5, #7ea86d); }
+    .art-item:nth-child(5) { background: linear-gradient(135deg, #f0d8c0, #d4a870); }
+    .art-item:nth-child(6) { background: linear-gradient(135deg, #d0e0c0, #a8c890); }
+
+    .art-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(61,43,31,0.55);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+    .art-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .art-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(247,243,236,0.6);
+    }
+
+    /* ── ABOUT THIS WORK ── */
+    .statement-section {
+      background: var(--parchment);
+      padding: 80px 80px;
+    }
+    .statement-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .statement-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--moss);
+      margin-bottom: 20px;
+    }
+    .statement-text {
+      font-family: 'Lora', serif;
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+    }
+    .statement-sig {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: var(--bark);
+      margin-top: 32px;
+    }
+
+    /* ── BACK TO COMMUNITY ── */
+    .back-bar {
+      padding: 48px 80px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      align-items: center;
+    }
+    .back-bar a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(138,112,96,0.3);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .back-bar a:hover { color: var(--bark); }
+    .back-bar .dot { color: var(--lichen); }
+
+    /* ── ANIMATIONS ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="../../" class="nav-logo">🌿 The Treehouse</a>
+    <a href="../../members/" class="nav-back">← Back to members</a>
+  </nav>
+
+  <!-- PROFILE HERO -->
+  <div class="profile-hero">
+    <div class="profile-sidebar">
+      <div class="member-badge">Member since 2024</div>
+      <h1 class="member-name">Maya<br>Chen</h1>
+      <div class="member-medium">Watercolor &amp; Ink</div>
+      <div class="member-location">📍 Portland, Oregon</div>
+    </div>
+    <div class="profile-intro">
+      <p class="intro-quote">Painting the spaces between memory and place.</p>
+      <p class="intro-bio">I work with watercolor and ink, mostly in small studies that try to hold onto something — a quality of light through a window, the particular green of Pacific Northwest ferns, the way a city looks when you're homesick for it even while you're still there. I paint what I'm afraid I'll forget.</p>
+      <div class="profile-tags">
+        <span class="tag">Watercolor</span>
+        <span class="tag">Ink</span>
+        <span class="tag">Landscape</span>
+        <span class="tag">Memory</span>
+        <span class="tag">Pacific Northwest</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-header fade-in">
+      <h2 class="gallery-title">Works</h2>
+      <span class="gallery-count">6 pieces</span>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="art-item fade-in fade-in-delay-1">
+        <div class="art-placeholder">
+          <div class="art-emoji">🎨</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">Forest Study No. 12</div>
+          <div class="art-meta">Watercolor on paper · 18×24" · 2024</div>
+        </div>
+      </div>
+      <div class="art-item fade-in fade-in-delay-1">
+        <div class="art-placeholder">
+          <div class="art-emoji">🌊</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">Low Tide, Cannon Beach</div>
+          <div class="art-meta">Watercolor & ink · 12×16" · 2024</div>
+        </div>
+      </div>
+      <div class="art-item fade-in fade-in-delay-2">
+        <div class="art-placeholder">
+          <div class="art-emoji">🏙️</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">The City I Left</div>
+          <div class="art-meta">Ink on watercolor paper · 9×12" · 2023</div>
+        </div>
+      </div>
+      <div class="art-item fade-in fade-in-delay-1">
+        <div class="art-placeholder">
+          <div class="art-emoji">🌿</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">Fern Light</div>
+          <div class="art-meta">Watercolor · 8×10" · 2024</div>
+        </div>
+      </div>
+      <div class="art-item fade-in fade-in-delay-2">
+        <div class="art-placeholder">
+          <div class="art-emoji">🪟</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">Window, November</div>
+          <div class="art-meta">Watercolor & graphite · 6×8" · 2024</div>
+        </div>
+      </div>
+      <div class="art-item fade-in fade-in-delay-2">
+        <div class="art-placeholder">
+          <div class="art-emoji">🌫️</div>
+        </div>
+        <div class="art-overlay">
+          <div class="art-title">Fog Study</div>
+          <div class="art-meta">Watercolor · 5×7" · 2024</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT -->
+  <section class="statement-section fade-in">
+    <div class="statement-inner">
+      <p class="statement-label">Artist statement</p>
+      <p class="statement-text">My practice is rooted in attention — looking slowly at things I would otherwise walk past. There's a particular quality of light in the Pacific Northwest, filtered through fir and cedar, that I've been chasing for years. Watercolor suits this because it resists control. You set an intention and then you let the water do what it wants. I think that's honest.</p>
+      <p class="statement-sig">— Maya Chen</p>
+    </div>
+  </section>
+
+  <!-- BACK BAR -->
+  <div class="back-bar">
+    <a href="../../members/">← All members</a>
+    <span class="dot">✦</span>
+    <a href="../../members/theo/">Next: Theo Adeyemi →</a>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
