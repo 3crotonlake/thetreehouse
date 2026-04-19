@@ -1,1 +1,554 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donald Sanders — The Treehouse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bark: #3d2b1f;
+      --bark-light: #6b4a36;
+      --moss: #5c7a4e;
+      --lichen: #b5c9a1;
+      --cream: #f7f3ec;
+      --parchment: #ede6d6;
+      --amber: #c8873c;
+      --amber-light: #e8a85a;
+      --text: #2a1f15;
+      --text-mid: #5a4535;
+      --text-soft: #8a7060;
+      /* Donald's accent — deep terracotta pulled from his triptych panels */
+      --member-accent: #7a3a1e;
+      --member-accent-light: #a05030;
+      --teal: #2a8080;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      border-bottom: 1px solid rgba(61,43,31,0.08);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--bark);
+      text-decoration: none;
+    }
+    .nav-back {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-back:hover { color: var(--bark); }
+
+    /* ── HERO — full-bleed painting behind name ── */
+    .profile-hero {
+      position: relative;
+      height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.55);
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(61,43,31,0.92) 0%,
+        rgba(61,43,31,0.4) 50%,
+        transparent 100%
+      );
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 48px 80px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .hero-left {}
+    .member-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--amber-light);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .member-badge::before {
+      content: '';
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--amber-light);
+    }
+    .member-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      color: var(--cream);
+      line-height: 1.0;
+      margin-bottom: 12px;
+    }
+    .member-medium {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: rgba(247,243,236,0.6);
+      letter-spacing: 0.06em;
+    }
+    .hero-right {
+      text-align: right;
+    }
+    .hero-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: rgba(247,243,236,0.75);
+      max-width: 340px;
+      line-height: 1.6;
+    }
+
+    /* ── BIO STRIP ── */
+    .bio-strip {
+      background: var(--member-accent);
+      padding: 48px 80px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    .bio-text {
+      grid-column: span 2;
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: rgba(247,243,236,0.8);
+    }
+    .bio-text strong {
+      color: var(--cream);
+      font-weight: 500;
+    }
+    .bio-tags {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+    }
+    .tag {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--amber-light);
+      background: rgba(232,168,90,0.12);
+      border: 1px solid rgba(232,168,90,0.25);
+      padding: 7px 16px;
+      border-radius: 100px;
+    }
+
+    /* ── GALLERY ── */
+    .gallery-section {
+      padding: 80px 80px;
+    }
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 48px;
+    }
+    .gallery-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--bark);
+    }
+    .gallery-count {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+    }
+
+    /* Layout: big featured on left, two stacked right, then wide triptych below */
+    .gallery-top {
+      display: grid;
+      grid-template-columns: 3fr 2fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .gallery-bottom {
+      width: 100%;
+    }
+
+    .art-item {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+      background: var(--parchment);
+    }
+    .art-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .art-item:hover img { transform: scale(1.03); }
+
+    /* Featured portrait — tall */
+    .art-featured {
+      height: 520px;
+    }
+    /* Smaller collage */
+    .art-secondary {
+      height: 520px;
+    }
+    /* Wide triptych */
+    .art-triptych {
+      height: 280px;
+    }
+    .art-triptych img {
+      object-position: center center;
+    }
+
+    .art-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(61,43,31,0.6);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 24px;
+    }
+    .art-item:hover .art-overlay { opacity: 1; }
+    .art-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--cream);
+      margin-bottom: 4px;
+    }
+    .art-meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(247,243,236,0.6);
+    }
+
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(20,10,5,0.92);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      cursor: zoom-out;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 32px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 2rem;
+      color: rgba(247,243,236,0.6);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+    }
+    .lightbox-close:hover { color: var(--cream); }
+
+    /* ── STATEMENT ── */
+    .statement-section {
+      background: var(--parchment);
+      padding: 80px 80px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .statement-left {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .statement-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--member-accent-light);
+    }
+    .statement-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      font-weight: 700;
+      color: var(--member-accent);
+      line-height: 1;
+      opacity: 0.25;
+    }
+    .influence-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .influence-list li {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .influence-list li::before {
+      content: '—';
+      color: var(--amber);
+      font-size: 0.7rem;
+    }
+    .statement-right {}
+    .statement-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--bark);
+      line-height: 1.2;
+      margin-bottom: 24px;
+    }
+    .statement-body {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 16px;
+    }
+    .statement-sig {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--bark);
+      margin-top: 28px;
+    }
+
+    /* ── BACK BAR ── */
+    .back-bar {
+      padding: 48px 80px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      align-items: center;
+      border-top: 1px solid rgba(61,43,31,0.08);
+    }
+    .back-bar a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(138,112,96,0.3);
+      padding-bottom: 2px;
+      transition: color 0.2s;
+    }
+    .back-bar a:hover { color: var(--bark); }
+    .back-bar .dot { color: var(--lichen); }
+
+    /* ── FADE IN ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: 0.1s; }
+    .fade-in-delay-2 { transition-delay: 0.2s; }
+    .fade-in-delay-3 { transition-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="../../" class="nav-logo">🌿 The Treehouse</a>
+    <a href="../../members/" class="nav-back">← Back to members</a>
+  </nav>
+
+  <!-- HERO — donnie1 as background -->
+  <div class="profile-hero">
+    <img class="hero-bg"
+      src="https://res.cloudinary.com/dkybcebbo/image/upload/donnie/donnie1"
+      alt="Painting by Donald Sanders">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="member-badge">Member</div>
+        <h1 class="member-name">Donald<br>Sanders</h1>
+        <div class="member-medium">Painting &amp; Drawing</div>
+      </div>
+      <div class="hero-right">
+        <p class="hero-quote">The face is never just a face — it's everything that's happened to it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIO STRIP -->
+  <div class="bio-strip fade-in">
+    <p class="bio-text">Donald Sanders paints with the kind of <strong>confidence that takes decades to earn</strong>. His work moves between two registers — explosive figurative portraits where faces fragment into planes of colour, and fluid sculptural forms that seem to float free of gravity. Whether in oils, mixed media, or bas-relief, there's a persistent tension in his work between <strong>control and release</strong>, between the recognisable human figure and something more primal beneath it.</p>
+    <div class="bio-tags">
+      <span class="tag">Figurative</span>
+      <span class="tag">Expressionist</span>
+      <span class="tag">Mixed Media</span>
+      <span class="tag">Sculpture</span>
+      <span class="tag">Colour &amp; Form</span>
+    </div>
+  </div>
+
+  <!-- GALLERY -->
+  <section class="gallery-section">
+    <div class="gallery-header fade-in">
+      <h2 class="gallery-title">Works</h2>
+      <span class="gallery-count">3 pieces</span>
+    </div>
+
+    <div class="gallery-top">
+      <!-- Featured portrait -->
+      <div class="art-item art-featured fade-in fade-in-delay-1"
+           onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/donnie/donnie1')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_900,c_fill/donnie/donnie1"
+             alt="Untitled Portrait">
+        <div class="art-overlay">
+          <div class="art-title">Untitled Portrait</div>
+          <div class="art-meta">Oil on canvas · Figurative</div>
+        </div>
+      </div>
+
+      <!-- Collage / mixed media -->
+      <div class="art-item art-secondary fade-in fade-in-delay-2"
+           onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/donnie/donnie0')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_700,c_fill/donnie/donnie0"
+             alt="Mixed Media Study">
+        <div class="art-overlay">
+          <div class="art-title">Mixed Media Study</div>
+          <div class="art-meta">Mixed media · Collage</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Wide triptych -->
+    <div class="gallery-bottom fade-in fade-in-delay-3">
+      <div class="art-item art-triptych"
+           onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/donnie/donnie2')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_1600,c_fill,g_center/donnie/donnie2"
+             alt="Triptych — Three Figures">
+        <div class="art-overlay">
+          <div class="art-title">Triptych — Three Figures</div>
+          <div class="art-meta">Relief &amp; paint on panel · Three parts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <!-- STATEMENT -->
+  <section class="statement-section">
+    <div class="statement-left fade-in">
+      <div class="statement-label">In the work</div>
+      <div class="statement-num">DS</div>
+      <ul class="influence-list">
+        <li>Picasso &amp; Cubist fragmentation</li>
+        <li>Bold expressive colour</li>
+        <li>The human figure as subject</li>
+        <li>Sculptural form in 2D &amp; 3D</li>
+      </ul>
+    </div>
+    <div class="statement-right fade-in fade-in-delay-1">
+      <h2 class="statement-heading">Paint what<br>you can't say.</h2>
+      <p class="statement-body">There's a Cubist lineage running through Donald's portraits — faces pulled apart and reassembled, eyes that look in two directions at once, features that become abstract geometry without losing their humanity. But this is no academic exercise. The paint is too alive for that, the colour too personal.</p>
+      <p class="statement-body">His triptych of turquoise figures is something else entirely — bodies in motion, liberated from gravity, rendered with the kind of fluid certainty that suggests years of drawing from life. Warm terracotta grounds against cool teal figures: it's a conversation between earth and air.</p>
+      <p class="statement-sig">— Donald Sanders</p>
+    </div>
+  </section>
+
+  <!-- BACK BAR -->
+  <div class="back-bar">
+    <a href="../../members/">← All members</a>
+    <span class="dot">✦</span>
+    <a href="../../members/maya/">Maya Chen →</a>
+  </div>
+
+  <script>
+    // Scroll fade-in
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
+</body>
+</html>
