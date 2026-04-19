@@ -10,239 +10,65 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bark: #3d2b1f;
-      --bark-light: #6b4a36;
-      --moss: #5c7a4e;
-      --lichen: #b5c9a1;
-      --cream: #f7f3ec;
-      --parchment: #ede6d6;
-      --amber: #c8873c;
-      --amber-light: #e8a85a;
-      --text: #2a1f15;
-      --text-mid: #5a4535;
-      --text-soft: #8a7060;
-      --accent: #1a3a5c;
-      --accent-light: #2a5a8c;
+      --bark: #3d2b1f; --bark-light: #6b4a36; --moss: #5c7a4e; --lichen: #b5c9a1;
+      --cream: #f7f3ec; --parchment: #ede6d6; --amber: #c8873c; --amber-light: #e8a85a;
+      --text: #2a1f15; --text-mid: #5a4535; --text-soft: #8a7060;
+      --accent: #1a3a5c; --accent-light: #2a5a8c;
     }
     body { background: var(--cream); color: var(--text); font-family: 'Lora', Georgia, serif; overflow-x: hidden; }
-    body::before {
-      content: '';
-      position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999; opacity: 0.4;
-    }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
     nav { display:flex; justify-content:space-between; align-items:center; padding:24px 48px; border-bottom:1px solid rgba(61,43,31,0.08); }
     .nav-logo { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--bark); text-decoration:none; }
     .nav-back { font-family:'DM Sans',sans-serif; font-size:0.85rem; color:var(--text-soft); text-decoration:none; transition:color 0.2s; }
     .nav-back:hover { color:var(--bark); }
 
-    /* HERO — dark blue, photo left, name right */
-    .profile-hero {
-      background: var(--accent);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 480px;
-      position: relative;
-      overflow: hidden;
-    }
-    .profile-hero::before {
-      content: '';
-      position: absolute;
-      top: -80px; right: 200px;
-      width: 320px; height: 320px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.03);
-    }
-    .hero-photo {
-      position: relative;
-      overflow: hidden;
-    }
-    .hero-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      filter: grayscale(30%) sepia(20%);
-      display: block;
-    }
-    .hero-photo::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to right, transparent 60%, var(--accent));
-    }
-    .hero-info {
-      padding: 60px 64px 60px 40px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      position: relative;
-      z-index: 2;
-    }
-    .member-badge {
-      font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500;
-      letter-spacing:0.2em; text-transform:uppercase;
-      color:rgba(232,168,90,0.7); margin-bottom:16px;
-      display:flex; align-items:center; gap:10px;
-    }
+    /* HERO — featured etching as full-bleed background */
+    .profile-hero { position:relative; height:560px; overflow:hidden; display:flex; align-items:flex-end; background:var(--accent); }
+    .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center; filter:brightness(0.4) sepia(20%); display:block; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(26,58,92,0.95) 0%, rgba(26,58,92,0.5) 50%, transparent 100%); }
+    .hero-content { position:relative; z-index:2; padding:48px 80px; width:100%; display:flex; justify-content:space-between; align-items:flex-end; }
+    .member-badge { font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:rgba(232,168,90,0.7); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
     .member-badge::before { content:''; width:20px; height:1px; background:rgba(232,168,90,0.7); }
-    .member-name {
-      font-family:'Playfair Display',serif;
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
-      font-weight:700; color:var(--cream); line-height:1.0; margin-bottom:12px;
-    }
-    .member-years {
-      font-family:'DM Sans',sans-serif; font-size:0.85rem;
-      color:rgba(247,243,236,0.45); letter-spacing:0.1em; margin-bottom:24px;
-    }
-    .hero-quote {
-      font-family:'Playfair Display',serif; font-style:italic;
-      font-size:1.05rem; color:rgba(247,243,236,0.7);
-      line-height:1.65; max-width:360px;
-      border-left:2px solid rgba(232,168,90,0.4);
-      padding-left:20px;
-    }
+    .member-name { font-family:'Playfair Display',serif; font-size:clamp(2.8rem,5vw,4.5rem); font-weight:700; color:var(--cream); line-height:1.0; margin-bottom:8px; }
+    .member-years { font-family:'DM Sans',sans-serif; font-size:0.85rem; color:rgba(247,243,236,0.45); letter-spacing:0.1em; margin-bottom:20px; }
+    .hero-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:rgba(247,243,236,0.7); line-height:1.65; max-width:360px; border-left:2px solid rgba(232,168,90,0.4); padding-left:20px; }
 
-    /* TAGS BAR */
-    .tags-bar {
-      background: var(--accent-light);
-      padding: 20px 80px;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .tag {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500;
-      letter-spacing:0.08em;
-      color:rgba(232,168,90,0.9);
-      background:rgba(232,168,90,0.1);
-      border:1px solid rgba(232,168,90,0.2);
-      padding:6px 14px; border-radius:100px;
-    }
+    .tags-bar { background:var(--accent-light); padding:18px 80px; display:flex; gap:10px; flex-wrap:wrap; }
+    .tag { font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500; letter-spacing:0.08em; color:rgba(232,168,90,0.9); background:rgba(232,168,90,0.1); border:1px solid rgba(232,168,90,0.2); padding:6px 14px; border-radius:100px; }
 
-    /* WORKS GRID — styled cards linking to museum pages */
-    .works-section { padding:72px 80px; }
-    .works-header { margin-bottom:48px; }
-    .section-label {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500;
-      letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-light);
-      margin-bottom:12px; display:flex; align-items:center; gap:8px;
-    }
+    /* GALLERY — real images */
+    .gallery-section { padding:72px 80px; }
+    .section-label { font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent-light); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
     .section-label::before { content:''; width:20px; height:1px; background:var(--accent-light); }
-    .section-title {
-      font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700;
-      color:var(--bark); line-height:1.2;
-    }
+    .section-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; color:var(--bark); line-height:1.2; margin-bottom:40px; }
+    .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+    .art-item { position:relative; border-radius:8px; overflow:hidden; cursor:zoom-in; background:var(--parchment); border:1px solid rgba(61,43,31,0.08); }
+    .art-item img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; transition:transform 0.4s ease; }
+    .art-item:hover img { transform:scale(1.04); }
+    .art-overlay { position:absolute; inset:0; background:rgba(26,58,92,0.75); opacity:0; transition:opacity 0.3s; display:flex; flex-direction:column; justify-content:flex-end; padding:20px; }
+    .art-item:hover .art-overlay { opacity:1; }
+    .art-title { font-family:'Playfair Display',serif; font-size:0.9rem; font-style:italic; color:var(--cream); margin-bottom:3px; }
+    .art-meta { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.6); }
 
-    .works-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-    }
-    .work-card {
-      background: var(--parchment);
-      border-radius: 12px;
-      overflow: hidden;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid rgba(61,43,31,0.06);
-    }
-    .work-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(61,43,31,0.1); }
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(10,20,35,0.95); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:92vw; max-height:92vh; object-fit:contain; }
+    .lightbox-close { position:absolute; top:24px; right:32px; font-size:2rem; color:rgba(247,243,236,0.5); cursor:pointer; background:none; border:none; }
 
-    /* Illustrated placeholder — etching-style SVG aesthetic */
-    .work-art {
-      width: 100%; aspect-ratio: 4/3;
-      background: var(--accent);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .work-art svg { width: 60%; height: 60%; opacity: 0.15; }
-    .work-art-label {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .work-art-year {
-      font-family:'Playfair Display',serif; font-size:2.5rem; font-weight:700;
-      color:rgba(247,243,236,0.12); line-height:1;
-    }
-    .work-art-num {
-      font-family:'DM Sans',sans-serif; font-size:0.7rem; letter-spacing:0.2em;
-      text-transform:uppercase; color:rgba(232,168,90,0.5);
-    }
-    .work-info { padding: 20px 22px 22px; }
-    .work-title {
-      font-family:'Playfair Display',serif; font-size:0.95rem; font-style:italic;
-      color:var(--bark); margin-bottom:4px;
-    }
-    .work-meta {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; color:var(--text-soft);
-      margin-bottom:10px;
-    }
-    .work-desc {
-      font-family:'Lora',serif; font-size:0.83rem; line-height:1.6;
-      color:var(--text-mid); margin-bottom:14px;
-    }
-    .work-link {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500;
-      color:var(--accent-light); text-decoration:none;
-      display:inline-flex; align-items:center; gap:6px;
-      border-bottom:1px solid rgba(42,90,140,0.3); padding-bottom:1px;
-    }
-    .work-link:hover { color:var(--accent); }
-
-    /* BIO */
-    .bio-section {
-      background: var(--accent);
-      padding: 72px 80px;
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 80px;
-      align-items: start;
-    }
-    .bio-text {
-      font-family:'Lora',serif; font-size:1.05rem; line-height:1.85;
-      color:rgba(247,243,236,0.75);
-    }
+    .bio-section { background:var(--accent); padding:72px 80px; display:grid; grid-template-columns:2fr 1fr; gap:80px; align-items:start; }
+    .bio-text { font-family:'Lora',serif; font-size:1.05rem; line-height:1.85; color:rgba(247,243,236,0.75); }
     .bio-text strong { color:var(--cream); font-weight:500; }
+    .bio-text em { font-style:italic; color:var(--amber-light); }
     .bio-text p + p { margin-top:20px; }
-    .bio-sidebar { display:flex; flex-direction:column; gap:24px; }
-    .bio-stat { border-top:1px solid rgba(247,243,236,0.1); padding-top:20px; }
-    .bio-stat-num {
-      font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:700;
-      color:var(--amber-light); line-height:1;
-    }
-    .bio-stat-label {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; color:rgba(247,243,236,0.45);
-      margin-top:4px; letter-spacing:0.06em;
-    }
+    .bio-sidebar { display:flex; flex-direction:column; gap:0; }
+    .bio-stat { border-top:1px solid rgba(255,255,255,0.08); padding:20px 0; }
+    .bio-stat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; color:var(--amber-light); line-height:1; }
+    .bio-stat-label { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.4); margin-top:4px; }
 
-    /* ATTRIBUTION */
-    .attribution {
-      padding: 32px 80px;
-      background: var(--parchment);
-      border-top: 1px solid rgba(61,43,31,0.08);
-    }
-    .attribution p {
-      font-family:'DM Sans',sans-serif; font-size:0.75rem; color:var(--text-soft);
-      line-height:1.7;
-    }
-    .attribution a { color:var(--accent-light); }
+    .attribution { padding:24px 80px; background:var(--parchment); border-top:1px solid rgba(61,43,31,0.08); }
+    .attribution p { font-family:'DM Sans',sans-serif; font-size:0.72rem; color:var(--text-soft); line-height:1.7; }
 
-    /* BACK BAR */
-    .back-bar {
-      padding:40px 80px; display:flex; justify-content:center; gap:24px; align-items:center;
-      border-top:1px solid rgba(61,43,31,0.08);
-    }
+    .back-bar { padding:40px 80px; display:flex; justify-content:center; gap:24px; align-items:center; border-top:1px solid rgba(61,43,31,0.08); }
     .back-bar a { font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--text-soft); text-decoration:none; border-bottom:1px solid rgba(138,112,96,0.3); padding-bottom:2px; transition:color 0.2s; }
     .back-bar a:hover { color:var(--bark); }
     .back-bar .dot { color:var(--lichen); }
@@ -251,141 +77,97 @@
     .fade-in.visible { opacity:1; transform:translateY(0); }
     .fade-in-delay-1 { transition-delay:0.1s; }
     .fade-in-delay-2 { transition-delay:0.2s; }
-    .fade-in-delay-3 { transition-delay:0.3s; }
   </style>
 </head>
 <body>
+  <nav>
+    <a href="../../" class="nav-logo">🌿 The Treehouse</a>
+    <a href="../../members/" class="nav-back">← Back to members</a>
+  </nav>
 
-<nav>
-  <a href="../../" class="nav-logo">🌿 The Treehouse</a>
-  <a href="../../members/" class="nav-back">← Back to members</a>
-</nav>
-
-<!-- HERO -->
-<div class="profile-hero">
-  <div class="hero-photo">
-    <!-- Public domain photo, Wikimedia Commons, 1908 -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pablo_picasso_1.jpg/800px-Pablo_picasso_1.jpg" alt="Pablo Picasso, 1908">
+  <div class="profile-hero">
+    <img class="hero-bg" src="https://res.cloudinary.com/dkybcebbo/image/upload/w_1600,c_fill/thetreehouse/picasso/picasso_model_and_viewer" alt="Picasso 347 Series etching">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div>
+        <div class="member-badge">Member — In memoriam</div>
+        <h1 class="member-name">Pablo<br>Picasso</h1>
+        <div class="member-years">1881 – 1973 &nbsp;·&nbsp; Málaga, Spain</div>
+      </div>
+      <p class="hero-quote">I spend hour after hour while I draw, observing my creatures and thinking about the mad things they're up to. Basically, it's my way of writing fiction.</p>
+    </div>
   </div>
-  <div class="hero-info">
-    <div class="member-badge">Member — In memoriam</div>
-    <h1 class="member-name">Pablo<br>Picasso</h1>
-    <div class="member-years">1881 – 1973 &nbsp;·&nbsp; Málaga, Spain</div>
-    <p class="hero-quote">I spend hour after hour while I draw, observing my creatures and thinking about the mad things they're up to. Basically, it's my way of writing fiction.</p>
+
+  <div class="tags-bar">
+    <span class="tag">Cubism</span>
+    <span class="tag">Etching</span>
+    <span class="tag">Printmaking</span>
+    <span class="tag">347 Series</span>
+    <span class="tag">Oil Painting</span>
+    <span class="tag">Sculpture</span>
   </div>
-</div>
 
-<!-- TAGS -->
-<div class="tags-bar">
-  <span class="tag">Cubism</span>
-  <span class="tag">Etching</span>
-  <span class="tag">Printmaking</span>
-  <span class="tag">Oil Painting</span>
-  <span class="tag">Sculpture</span>
-  <span class="tag">347 Series</span>
-  <span class="tag">Co-founder of Cubism</span>
-</div>
-
-<!-- WORKS -->
-<section class="works-section">
-  <div class="works-header fade-in">
-    <p class="section-label">Selected works</p>
-    <h2 class="section-title">The 347 Series, 1968</h2>
-  </div>
-  <div class="works-grid">
-
-    <a href="https://www.moma.org/collection/works/72025" target="_blank" class="work-card fade-in fade-in-delay-1">
-      <div class="work-art">
-        <div class="work-art-label">
-          <div class="work-art-year">1968</div>
-          <div class="work-art-num">Suite 347 · No. 1</div>
+  <section class="gallery-section">
+    <p class="section-label fade-in">Selected works</p>
+    <h2 class="section-title fade-in">The 347 Series, 1968</h2>
+    <div class="gallery-grid">
+      <div class="art-item fade-in" onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/thetreehouse/picasso/picasso_model_and_viewer')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_700,c_fill/thetreehouse/picasso/picasso_model_and_viewer" alt="Picasso Model and Viewer">
+        <div class="art-overlay">
+          <div class="art-title">Vieux Peintre, Modèle et Spectateur</div>
+          <div class="art-meta">Etching · Suite 347 · 1968</div>
         </div>
       </div>
-      <div class="work-info">
-        <div class="work-title">Picasso, His Work, and His Public</div>
-        <div class="work-meta">Etching · 39.3 × 56.5 cm · MoMA, New York</div>
-        <div class="work-desc">One of the defining images of the 347 Series — Picasso as both observer and participant in the spectacle of art-making. Crowded, theatrical, alive.</div>
-        <span class="work-link">View at MoMA →</span>
-      </div>
-    </a>
-
-    <a href="https://www.metmuseum.org/art/collection/search/400272" target="_blank" class="work-card fade-in fade-in-delay-2">
-      <div class="work-art">
-        <div class="work-art-label">
-          <div class="work-art-year">1968</div>
-          <div class="work-art-num">Suite 347 · Met</div>
+      <div class="art-item fade-in fade-in-delay-1" onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/thetreehouse/picasso/picasso_fat_courtesan')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_700,c_fill/thetreehouse/picasso/picasso_fat_courtesan" alt="Picasso Courtesan">
+        <div class="art-overlay">
+          <div class="art-title">Courtisane et Cavaliers</div>
+          <div class="art-meta">Etching · Suite 347 · 1968</div>
         </div>
       </div>
-      <div class="work-info">
-        <div class="work-title">Picasso, His Work and His Public</div>
-        <div class="work-meta">Etching · 39.1 × 56.5 cm · The Met, New York</div>
-        <div class="work-desc">347 prints in seven months. At 86, Picasso outpaced Rembrandt's lifetime print output — driven not by urgency but by sheer joy in making.</div>
-        <span class="work-link">View at The Met →</span>
-      </div>
-    </a>
-
-    <a href="https://www.artic.edu/search?q=picasso+347" target="_blank" class="work-card fade-in fade-in-delay-3">
-      <div class="work-art">
-        <div class="work-art-label">
-          <div class="work-art-year">1968</div>
-          <div class="work-art-num">Suite 347 · AIC</div>
+      <div class="art-item fade-in fade-in-delay-2" onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/thetreehouse/picasso/picasso_Degas')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_700,c_fill/thetreehouse/picasso/picasso_Degas" alt="Picasso Degas">
+        <div class="art-overlay">
+          <div class="art-title">Degas imaginant, entre deux filles</div>
+          <div class="art-meta">Etching · Suite 347 · 1968</div>
         </div>
       </div>
-      <div class="work-info">
-        <div class="work-title">Suite 347 — First Exhibition</div>
-        <div class="work-meta">Etchings · Art Institute of Chicago</div>
-        <div class="work-desc">The series was first shown here in 1970. Circus figures, musketeers, painters with their models — a universe invented in seven months of relentless mark-making.</div>
-        <span class="work-link">Explore at AIC →</span>
-      </div>
-    </a>
+    </div>
+  </section>
 
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="">
   </div>
-</section>
 
-<!-- BIO -->
-<section class="bio-section fade-in">
-  <div class="bio-text">
-    <p>Pablo Picasso was born in Málaga, Spain in 1881 and died in Mougins, France in 1973. He co-founded Cubism, invented collage as a fine art medium, and was among the most prolific artists in history — producing an estimated <strong>20,000 works</strong> across painting, drawing, sculpture, ceramics, and printmaking.</p>
-    <p>The <strong>347 Series</strong> was made between March and October 1968, when Picasso was 86 years old. Working with master printers Aldo and Piero Crommelynck at a press near his Mougins studio, he produced 347 etchings in seven months. The prints teem with musketeers, circus performers, painters and their models, mythological figures — all observed with the eye of a novelist. Picasso himself described it as <em>"my way of writing fiction."</em></p>
-    <p>The series was first exhibited at the Art Institute of Chicago and the Galerie Louise Leiris in Paris in 1970. It remains one of the most remarkable late-career achievements in the history of printmaking.</p>
+  <section class="bio-section fade-in">
+    <div class="bio-text">
+      <p>Pablo Picasso was born in Málaga, Spain in 1881. He co-founded Cubism, invented collage as a fine art medium, and produced an estimated <strong>20,000 works</strong> across painting, drawing, sculpture, ceramics, and printmaking.</p>
+      <p>The <strong>347 Series</strong> was made between March and October 1968, when Picasso was 86 years old. Working with master printers Aldo and Piero Crommelynck, he produced 347 etchings in seven months — teeming with musketeers, circus performers, painters and their models. Picasso described it as <em>"my way of writing fiction."</em></p>
+    </div>
+    <div class="bio-sidebar">
+      <div class="bio-stat"><div class="bio-stat-num">347</div><div class="bio-stat-label">Etchings in 7 months</div></div>
+      <div class="bio-stat"><div class="bio-stat-num">86</div><div class="bio-stat-label">Years old when he made them</div></div>
+      <div class="bio-stat"><div class="bio-stat-num">~20k</div><div class="bio-stat-label">Total lifetime works</div></div>
+    </div>
+  </section>
+
+  <div class="attribution">
+    <p>Works shown are from the 347 Series (1968). © Estate of Pablo Picasso / Artists Rights Society (ARS), New York. Displayed here for non-commercial community purposes with attribution.</p>
   </div>
-  <div class="bio-sidebar">
-    <div class="bio-stat">
-      <div class="bio-stat-num">347</div>
-      <div class="bio-stat-label">Etchings in 7 months</div>
-    </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">86</div>
-      <div class="bio-stat-label">Years old when he made them</div>
-    </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">1881</div>
-      <div class="bio-stat-label">Born, Málaga Spain</div>
-    </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">~20k</div>
-      <div class="bio-stat-label">Total works in his lifetime</div>
-    </div>
+
+  <div class="back-bar">
+    <a href="../../members/">← All members</a>
+    <span class="dot">✦</span>
+    <a href="../../members/basquiat/">Basquiat →</a>
   </div>
-</section>
 
-<!-- ATTRIBUTION -->
-<div class="attribution">
-  <p>Portrait photograph: <em>Pablo Picasso in his Montmartre studio, 1908.</em> Public domain via <a href="https://commons.wikimedia.org/wiki/File:Pablo_picasso_1.jpg" target="_blank">Wikimedia Commons</a>. Works referenced link to their respective museum collections. All Picasso artwork © 2024 Estate of Pablo Picasso / Artists Rights Society (ARS), New York.</p>
-</div>
-
-<div class="back-bar">
-  <a href="../../members/">← All members</a>
-  <span class="dot">✦</span>
-  <a href="../../members/basquiat/">Basquiat →</a>
-</div>
-
-<script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-</script>
+  <script>
+    const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
 </body>
 </html>
-
