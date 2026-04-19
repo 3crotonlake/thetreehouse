@@ -10,237 +10,65 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bark: #3d2b1f;
-      --moss: #5c7a4e;
-      --lichen: #b5c9a1;
-      --cream: #f7f3ec;
-      --parchment: #ede6d6;
-      --amber: #c8873c;
-      --amber-light: #e8a85a;
-      --text: #2a1f15;
-      --text-mid: #5a4535;
-      --text-soft: #8a7060;
-      --accent: #1a1a1a;
-      --accent2: #c0392b;
+      --bark: #3d2b1f; --moss: #5c7a4e; --lichen: #b5c9a1;
+      --cream: #f7f3ec; --parchment: #ede6d6; --amber-light: #e8a85a;
+      --text: #2a1f15; --text-mid: #5a4535; --text-soft: #8a7060;
+      --accent: #1a1a1a; --accent2: #c0392b;
     }
     body { background: var(--cream); color: var(--text); font-family: 'Lora', Georgia, serif; overflow-x: hidden; }
-    body::before {
-      content: ''; position: fixed; inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none; z-index: 9999; opacity: 0.4;
-    }
+    body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
     nav { display:flex; justify-content:space-between; align-items:center; padding:24px 48px; border-bottom:1px solid rgba(61,43,31,0.08); }
     .nav-logo { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:700; color:var(--bark); text-decoration:none; }
     .nav-back { font-family:'DM Sans',sans-serif; font-size:0.85rem; color:var(--text-soft); text-decoration:none; transition:color 0.2s; }
     .nav-back:hover { color:var(--bark); }
 
-    /* HERO — raw black, graffiti energy */
-    .profile-hero {
-      background: var(--accent);
-      min-height: 520px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      position: relative;
-      overflow: hidden;
-    }
+    /* HERO — sketch as full-bleed */
+    .profile-hero { position:relative; height:560px; overflow:hidden; display:flex; align-items:flex-end; background:var(--accent); }
+    .hero-bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; filter:brightness(0.25); display:block; }
+    .hero-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.5) 50%, transparent 100%); }
+    .hero-content { position:relative; z-index:2; padding:48px 80px; width:100%; display:flex; justify-content:space-between; align-items:flex-end; }
+    .member-badge { font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:rgba(192,57,43,0.8); margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+    .member-badge::before { content:''; width:20px; height:1px; background:rgba(192,57,43,0.8); }
+    .hero-crown { font-size:2rem; margin-bottom:8px; }
+    .member-name { font-family:'Playfair Display',serif; font-size:clamp(2.4rem,4.5vw,4rem); font-weight:700; color:var(--cream); line-height:1.05; margin-bottom:8px; }
+    .member-years { font-family:'DM Sans',sans-serif; font-size:0.82rem; color:rgba(247,243,236,0.35); letter-spacing:0.1em; }
+    .hero-quote { font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:rgba(247,243,236,0.65); line-height:1.7; max-width:360px; border-left:2px solid rgba(192,57,43,0.35); padding-left:18px; }
 
-    /* Left: typographic / graffiti composition */
-    .hero-art {
-      padding: 60px 40px 60px 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      position: relative;
-    }
-    .hero-crown {
-      font-size: 3.5rem;
-      margin-bottom: 20px;
-      filter: drop-shadow(0 0 12px rgba(192,57,43,0.4));
-      animation: glow 3s ease-in-out infinite;
-    }
-    @keyframes glow {
-      0%,100% { filter: drop-shadow(0 0 8px rgba(192,57,43,0.3)); }
-      50% { filter: drop-shadow(0 0 20px rgba(192,57,43,0.6)); }
-    }
-    .hero-samo {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 12px;
-    }
-    .hero-scratches {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      margin-bottom: 32px;
-    }
-    .scratch-line {
-      height: 2px;
-      background: rgba(255,255,255,0.06);
-      border-radius: 1px;
-    }
-    .scratch-line:nth-child(1) { width: 80%; }
-    .scratch-line:nth-child(2) { width: 50%; }
-    .scratch-line:nth-child(3) { width: 65%; }
-    .hero-words {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.15);
-      line-height: 2.2;
-    }
-    .hero-words span { color: rgba(192,57,43,0.6); }
+    .tags-bar { background:#111; padding:16px 80px; display:flex; gap:10px; flex-wrap:wrap; }
+    .tag { font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500; letter-spacing:0.08em; color:rgba(192,57,43,0.85); background:rgba(192,57,43,0.08); border:1px solid rgba(192,57,43,0.2); padding:5px 12px; border-radius:3px; }
 
-    /* Right: name + quote */
-    .hero-info {
-      padding: 60px 60px 60px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      border-left: 1px solid rgba(255,255,255,0.04);
-    }
-    .member-badge {
-      font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500;
-      letter-spacing:0.2em; text-transform:uppercase;
-      color:rgba(192,57,43,0.7); margin-bottom:16px;
-      display:flex; align-items:center; gap:10px;
-    }
-    .member-badge::before { content:''; width:20px; height:1px; background:rgba(192,57,43,0.7); }
-    .member-name {
-      font-family:'Playfair Display',serif;
-      font-size:clamp(2rem,4vw,3.5rem);
-      font-weight:700; color:var(--cream); line-height:1.1; margin-bottom:8px;
-    }
-    .member-years {
-      font-family:'DM Sans',sans-serif; font-size:0.82rem;
-      color:rgba(247,243,236,0.35); letter-spacing:0.1em; margin-bottom:28px;
-    }
-    .hero-quote {
-      font-family:'Playfair Display',serif; font-style:italic;
-      font-size:1rem; color:rgba(247,243,236,0.65);
-      line-height:1.7; max-width:380px;
-      border-left:2px solid rgba(192,57,43,0.35); padding-left:18px;
-    }
-
-    /* TAGS */
-    .tags-bar {
-      background: #111;
-      padding:18px 80px;
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
-    .tag {
-      font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500;
-      letter-spacing:0.08em; color:rgba(192,57,43,0.85);
-      background:rgba(192,57,43,0.08); border:1px solid rgba(192,57,43,0.2);
-      padding:5px 12px; border-radius:3px;
-    }
-
-    /* WORKS */
-    .works-section { padding:72px 80px; }
-    .works-header { margin-bottom:48px; }
-    .section-label {
-      font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500;
-      letter-spacing:0.2em; text-transform:uppercase; color:var(--accent2);
-      margin-bottom:12px; display:flex; align-items:center; gap:8px;
-    }
+    /* GALLERY — two real images, different sizes */
+    .gallery-section { padding:72px 80px; }
+    .section-label { font-family:'DM Sans',sans-serif; font-size:0.72rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent2); margin-bottom:12px; display:flex; align-items:center; gap:8px; }
     .section-label::before { content:''; width:20px; height:1px; background:var(--accent2); }
-    .section-title {
-      font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700;
-      color:var(--bark); line-height:1.2;
-    }
-    .works-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-    .work-card {
-      background:#1a1a1a; border-radius:4px; overflow:hidden;
-      text-decoration:none; color:inherit; display:block;
-      transition:transform 0.3s, box-shadow 0.3s;
-    }
-    .work-card:hover { transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.3); }
-    .work-art {
-      width:100%; aspect-ratio:4/3;
-      display:flex; align-items:center; justify-content:center;
-      position:relative; overflow:hidden;
-      background: #111;
-    }
+    .section-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:700; color:var(--bark); line-height:1.2; margin-bottom:40px; }
+    .gallery-split { display:grid; grid-template-columns:1fr 1.4fr; gap:20px; }
+    .art-item { position:relative; border-radius:4px; overflow:hidden; cursor:zoom-in; background:#111; }
+    .art-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.4s ease; min-height:400px; }
+    .art-item:hover img { transform:scale(1.03); }
+    .art-overlay { position:absolute; inset:0; background:rgba(10,10,10,0.7); opacity:0; transition:opacity 0.3s; display:flex; flex-direction:column; justify-content:flex-end; padding:20px; }
+    .art-item:hover .art-overlay { opacity:1; }
+    .art-title { font-family:'Playfair Display',serif; font-size:0.95rem; font-style:italic; color:var(--cream); margin-bottom:3px; }
+    .art-meta { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.5); }
 
-    /* Each card gets a unique B&W sketch-style CSS composition */
-    .work-art-1 {
-      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-    }
-    .work-art-2 {
-      background: linear-gradient(135deg, #111 0%, #0d0d0d 100%);
-    }
-    .work-art-3 {
-      background: linear-gradient(135deg, #0d0d0d 0%, #151515 100%);
-    }
+    .lightbox { display:none; position:fixed; inset:0; background:rgba(5,5,5,0.96); z-index:1000; align-items:center; justify-content:center; cursor:zoom-out; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:92vw; max-height:92vh; object-fit:contain; }
+    .lightbox-close { position:absolute; top:24px; right:32px; font-size:2rem; color:rgba(247,243,236,0.4); cursor:pointer; background:none; border:none; }
 
-    .sketch-lines {
-      position:absolute; inset:0;
-      display:flex; flex-direction:column; justify-content:center; align-items:center;
-      gap:0; padding:24px;
-    }
-    .sketch-h {
-      width:100%; height:1px;
-      background:rgba(255,255,255,0.06); margin:6px 0;
-    }
-    .sketch-h:nth-child(odd) { width:80%; }
-    .sketch-h:nth-child(3n) { background:rgba(255,255,255,0.12); height:2px; }
-
-    .art-crown-overlay {
-      position:absolute; font-size:2.2rem;
-      opacity:0.12; top:16px; right:16px;
-    }
-    .art-text-overlay {
-      position:absolute; inset:0;
-      display:flex; flex-direction:column;
-      justify-content:center; align-items:center; gap:6px;
-    }
-    .art-year {
-      font-family:'DM Sans',sans-serif; font-size:0.65rem;
-      letter-spacing:0.2em; text-transform:uppercase;
-      color:rgba(192,57,43,0.5);
-    }
-    .art-cross {
-      font-size:2rem; color:rgba(255,255,255,0.06); line-height:1;
-    }
-
-    .work-info { padding:18px 20px 20px; }
-    .work-title {
-      font-family:'Playfair Display',serif; font-size:0.92rem; font-style:italic;
-      color:rgba(247,243,236,0.85); margin-bottom:4px;
-    }
-    .work-meta { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.3); margin-bottom:8px; }
-    .work-desc { font-family:'Lora',serif; font-size:0.8rem; line-height:1.6; color:rgba(247,243,236,0.55); margin-bottom:12px; }
-    .work-link {
-      font-family:'DM Sans',sans-serif; font-size:0.7rem; font-weight:500;
-      color:var(--accent2); text-decoration:none;
-      display:inline-flex; align-items:center; gap:5px;
-      border-bottom:1px solid rgba(192,57,43,0.3); padding-bottom:1px;
-    }
-    .work-link:hover { color:#e74c3c; }
-
-    /* BIO */
-    .bio-section {
-      background:var(--accent); padding:72px 80px;
-      display:grid; grid-template-columns:2fr 1fr; gap:72px; align-items:start;
-    }
+    .bio-section { background:var(--accent); padding:72px 80px; display:grid; grid-template-columns:2fr 1fr; gap:72px; align-items:start; }
     .bio-text { font-family:'Lora',serif; font-size:1.05rem; line-height:1.85; color:rgba(247,243,236,0.72); }
     .bio-text strong { color:var(--cream); font-weight:500; }
     .bio-text em { color:rgba(192,57,43,0.85); font-style:italic; }
     .bio-text p + p { margin-top:20px; }
-    .bio-sidebar { display:flex; flex-direction:column; gap:0; }
+    .bio-sidebar { display:flex; flex-direction:column; }
     .bio-stat { border-top:1px solid rgba(255,255,255,0.06); padding:20px 0; }
     .bio-stat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:700; color:var(--accent2); line-height:1; }
-    .bio-stat-label { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.35); margin-top:4px; letter-spacing:0.06em; }
+    .bio-stat-label { font-family:'DM Sans',sans-serif; font-size:0.7rem; color:rgba(247,243,236,0.35); margin-top:4px; }
 
-    /* ATTRIBUTION */
-    .attribution { padding:28px 80px; background:var(--parchment); border-top:1px solid rgba(61,43,31,0.08); }
-    .attribution p { font-family:'DM Sans',sans-serif; font-size:0.75rem; color:var(--text-soft); line-height:1.7; }
-    .attribution a { color:#c0392b; }
+    .attribution { padding:24px 80px; background:var(--parchment); border-top:1px solid rgba(61,43,31,0.08); }
+    .attribution p { font-family:'DM Sans',sans-serif; font-size:0.72rem; color:var(--text-soft); line-height:1.7; }
 
-    /* BACK BAR */
     .back-bar { padding:40px 80px; display:flex; justify-content:center; gap:24px; align-items:center; border-top:1px solid rgba(61,43,31,0.08); }
     .back-bar a { font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--text-soft); text-decoration:none; border-bottom:1px solid rgba(138,112,96,0.3); padding-bottom:2px; transition:color 0.2s; }
     .back-bar a:hover { color:var(--bark); }
@@ -248,177 +76,94 @@
 
     .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.7s ease,transform 0.7s ease; }
     .fade-in.visible { opacity:1; transform:translateY(0); }
-    .fade-in-delay-1 { transition-delay:0.1s; }
-    .fade-in-delay-2 { transition-delay:0.2s; }
-    .fade-in-delay-3 { transition-delay:0.3s; }
+    .fade-in-delay-1 { transition-delay:0.15s; }
   </style>
 </head>
 <body>
+  <nav>
+    <a href="../../" class="nav-logo">🌿 The Treehouse</a>
+    <a href="../../members/" class="nav-back">← Back to members</a>
+  </nav>
 
-<nav>
-  <a href="../../" class="nav-logo">🌿 The Treehouse</a>
-  <a href="../../members/" class="nav-back">← Back to members</a>
-</nav>
-
-<!-- HERO -->
-<div class="profile-hero">
-  <div class="hero-art">
-    <div class="hero-crown">👑</div>
-    <div class="hero-samo">SAMO© — 1978–1988</div>
-    <div class="hero-scratches">
-      <div class="scratch-line"></div>
-      <div class="scratch-line"></div>
-      <div class="scratch-line"></div>
-    </div>
-    <div class="hero-words">
-      ROYALTY &nbsp;·&nbsp; <span>POVERTY</span><br>
-      NOBILITY &nbsp;·&nbsp; <span>STREETS</span><br>
-      ANATOMY &nbsp;·&nbsp; <span>POWER</span><br>
-      SAMO &nbsp;·&nbsp; <span>AS AN ALTERNATIVE</span>
+  <div class="profile-hero">
+    <img class="hero-bg" src="https://res.cloudinary.com/dkybcebbo/image/upload/w_1600,c_fill/thetreehouse/basquiat/basquiat_head" alt="Basquiat sketch">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div>
+        <div class="member-badge">Member — In memoriam</div>
+        <div class="hero-crown">👑</div>
+        <h1 class="member-name">Jean-Michel<br>Basquiat</h1>
+        <div class="member-years">1960 – 1988 &nbsp;·&nbsp; Brooklyn, New York</div>
+      </div>
+      <p class="hero-quote">I don't think about art when I'm working. I think about life.</p>
     </div>
   </div>
-  <div class="hero-info">
-    <div class="member-badge">Member — In memoriam</div>
-    <h1 class="member-name">Jean-Michel<br>Basquiat</h1>
-    <div class="member-years">1960 – 1988 &nbsp;·&nbsp; Brooklyn, New York</div>
-    <p class="hero-quote">I don't think about art when I'm working. I think about life.</p>
+
+  <div class="tags-bar">
+    <span class="tag">Neo-Expressionism</span>
+    <span class="tag">Drawing</span>
+    <span class="tag">SAMO©</span>
+    <span class="tag">Anatomy</span>
+    <span class="tag">Text &amp; Image</span>
+    <span class="tag">Brooklyn</span>
   </div>
-</div>
 
-<!-- TAGS -->
-<div class="tags-bar">
-  <span class="tag">Neo-Expressionism</span>
-  <span class="tag">Drawing</span>
-  <span class="tag">Graffiti</span>
-  <span class="tag">SAMO©</span>
-  <span class="tag">Anatomy</span>
-  <span class="tag">Text & Image</span>
-  <span class="tag">Brooklyn</span>
-</div>
-
-<!-- WORKS -->
-<section class="works-section">
-  <div class="works-header fade-in">
-    <p class="section-label">Selected works</p>
-    <h2 class="section-title">Drawings &amp; Works on Paper</h2>
-  </div>
-  <div class="works-grid">
-
-    <a href="https://www.moma.org/artists/370" target="_blank" class="work-card fade-in fade-in-delay-1">
-      <div class="work-art work-art-1">
-        <div class="sketch-lines">
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-        </div>
-        <div class="art-crown-overlay">👑</div>
-        <div class="art-text-overlay">
-          <div class="art-year">1982</div>
-          <div class="art-cross">+</div>
+  <section class="gallery-section">
+    <p class="section-label fade-in">Works</p>
+    <h2 class="section-title fade-in">Drawings &amp; Paintings</h2>
+    <div class="gallery-split">
+      <div class="art-item fade-in" onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/thetreehouse/basquiat/basquiat_head')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_700,c_fill/thetreehouse/basquiat/basquiat_head" alt="Basquiat Head Sketch">
+        <div class="art-overlay">
+          <div class="art-title">Untitled (Head)</div>
+          <div class="art-meta">Ink on paper · Brooklyn Museum</div>
         </div>
       </div>
-      <div class="work-info">
-        <div class="work-title">Untitled (Skull Studies)</div>
-        <div class="work-meta">Ink on paper · Works on paper, 1982 · MoMA</div>
-        <div class="work-desc">Basquiat's skull drawings are among his most raw — anatomy crossed with portraiture, the body as both subject and social text.</div>
-        <span class="work-link">View at MoMA →</span>
-      </div>
-    </a>
-
-    <a href="https://www.brooklynmuseum.org/opencollection/artists/2397" target="_blank" class="work-card fade-in fade-in-delay-2">
-      <div class="work-art work-art-2">
-        <div class="sketch-lines">
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div>
-        </div>
-        <div class="art-crown-overlay">©</div>
-        <div class="art-text-overlay">
-          <div class="art-year">SAMO©</div>
-          <div class="art-cross">×</div>
+      <div class="art-item fade-in fade-in-delay-1" onclick="openLightbox('https://res.cloudinary.com/dkybcebbo/image/upload/thetreehouse/basquiat/basquiat_qualityMeats')">
+        <img src="https://res.cloudinary.com/dkybcebbo/image/upload/w_900,c_fill/thetreehouse/basquiat/basquiat_qualityMeats" alt="Quality Meats for the Public">
+        <div class="art-overlay">
+          <div class="art-title">Quality Meats for the Public</div>
+          <div class="art-meta">Silkscreen · 1982</div>
         </div>
       </div>
-      <div class="work-info">
-        <div class="work-title">SAMO© Notebook Pages</div>
-        <div class="work-meta">Mixed media on paper · Brooklyn Museum</div>
-        <div class="work-desc">Before canvas, there were notebooks. SAMO© (Same Old Shit) was his tag — a philosophical statement spray-painted across Lower Manhattan walls.</div>
-        <span class="work-link">Brooklyn Museum →</span>
-      </div>
-    </a>
-
-    <a href="https://www.guggenheim.org/artwork/artist/jean-michel-basquiat" target="_blank" class="work-card fade-in fade-in-delay-3">
-      <div class="work-art work-art-3">
-        <div class="sketch-lines">
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-          <div class="sketch-h"></div><div class="sketch-h"></div>
-        </div>
-        <div class="art-crown-overlay">★</div>
-        <div class="art-text-overlay">
-          <div class="art-year">1983–84</div>
-          <div class="art-cross">—</div>
-        </div>
-      </div>
-      <div class="work-info">
-        <div class="work-title">Untitled (Figure Studies)</div>
-        <div class="work-meta">Graphite & ink on paper · Guggenheim</div>
-        <div class="work-desc">The figure drawings reveal Basquiat's debt to anatomy texts — Grey's Anatomy was a childhood touchstone after a car accident at age seven.</div>
-        <span class="work-link">Guggenheim →</span>
-      </div>
-    </a>
-
-  </div>
-</section>
-
-<!-- BIO -->
-<section class="bio-section fade-in">
-  <div class="bio-text">
-    <p>Jean-Michel Basquiat was born in Brooklyn in 1960 to a Haitian father and Puerto Rican mother. At seven, he was struck by a car and spent weeks in hospital, where his mother brought him a copy of <em>Grey's Anatomy</em> — a book that would shape his visual language for the rest of his life.</p>
-    <p>He dropped out of school at 17 and began tagging Lower Manhattan walls as <strong>SAMO©</strong> — Same Old Shit — with a friend. The tags were aphorisms, critiques, poetry: <em>"SAMO© as an end to mindwash religion, nowhere politics and bogus philosophy."</em> They were noticed. By 1982 he was showing internationally and selling major works.</p>
-    <p>Basquiat worked fast, in <strong>Armani suits spattered with paint</strong>, across canvas, paper, doors, refrigerators. His drawings in particular — dense with crossed-out words, anatomical diagrams, crowns, and figures — are among the most electrically charged works on paper of the 20th century. He died in 1988 at 27.</p>
-  </div>
-  <div class="bio-sidebar">
-    <div class="bio-stat">
-      <div class="bio-stat-num">27</div>
-      <div class="bio-stat-label">Age at death, 1988</div>
     </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">1978</div>
-      <div class="bio-stat-label">First SAMO© tags, Manhattan</div>
-    </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">$110M</div>
-      <div class="bio-stat-label">Untitled (1982) auction, 2017</div>
-    </div>
-    <div class="bio-stat">
-      <div class="bio-stat-num">BK</div>
-      <div class="bio-stat-label">Born Brooklyn, New York</div>
-    </div>
+  </section>
+
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <button class="lightbox-close" onclick="closeLightbox()">×</button>
+    <img id="lightbox-img" src="" alt="">
   </div>
-</section>
 
-<!-- ATTRIBUTION -->
-<div class="attribution">
-  <p>All Jean-Michel Basquiat artwork © Estate of Jean-Michel Basquiat. Licensed by Artestar, New York. Works referenced link to their respective museum collections. No artwork is reproduced on this page.</p>
-</div>
+  <section class="bio-section fade-in">
+    <div class="bio-text">
+      <p>Jean-Michel Basquiat was born in Brooklyn in 1960 to a Haitian father and Puerto Rican mother. At seven, struck by a car, his mother brought him a copy of <em>Grey's Anatomy</em> to recover with — a book that would shape his visual language for life.</p>
+      <p>He began tagging Lower Manhattan as <strong>SAMO©</strong> — Same Old Shit — with a friend. By 1982 he was showing internationally. Basquiat worked fast, in <strong>Armani suits spattered with paint</strong>, across canvas, paper, doors, refrigerators. He died in 1988 at 27.</p>
+    </div>
+    <div class="bio-sidebar">
+      <div class="bio-stat"><div class="bio-stat-num">27</div><div class="bio-stat-label">Age at death, 1988</div></div>
+      <div class="bio-stat"><div class="bio-stat-num">1978</div><div class="bio-stat-label">First SAMO© tags, Manhattan</div></div>
+      <div class="bio-stat"><div class="bio-stat-num">$110M</div><div class="bio-stat-label">Untitled (1982) auction, 2017</div></div>
+    </div>
+  </section>
 
-<div class="back-bar">
-  <a href="../../members/">← All members</a>
-  <span class="dot">✦</span>
-  <a href="../../members/picasso/">← Picasso</a>
-  <span class="dot">✦</span>
-  <a href="../../members/donald/">Donald Sanders →</a>
-</div>
+  <div class="attribution">
+    <p>All Jean-Michel Basquiat artwork © Estate of Jean-Michel Basquiat. Licensed by Artestar, New York. Displayed here for non-commercial community purposes with attribution.</p>
+  </div>
 
-<script>
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-</script>
+  <div class="back-bar">
+    <a href="../../members/">← All members</a>
+    <span class="dot">✦</span>
+    <a href="../../members/picasso/">← Picasso</a>
+    <span class="dot">✦</span>
+    <a href="../../members/donald/">Donald Sanders →</a>
+  </div>
+
+  <script>
+    const observer = new IntersectionObserver(entries => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }); }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('open'); document.body.style.overflow = 'hidden'; }
+    function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+  </script>
 </body>
 </html>
-
